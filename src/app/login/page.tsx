@@ -28,7 +28,7 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-2">
-                <span className="font-light">Não possui uma conta? <Link href='/cadastro' className="font-bold text-emerald-600 hover:text-emerald-700">Cadastre-se</Link></span>
+                <span className="font-light">Não possui uma conta? <Link href='/register' className="font-bold text-emerald-600 hover:text-emerald-700">Cadastre-se</Link></span>
             </div>
         </div>
     )
