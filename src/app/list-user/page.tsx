@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { api } from "@/src/http/api";
 
 interface User {
   id: number | string;
@@ -8,19 +9,14 @@ interface User {
 
 async function getUsers(): Promise<User[] | null> {
   try {
-    const res = await fetch('https://jsonplaceholder.typicode.com/users', {
-      next: { revalidate: 60 } 
-    });
-
-    if (!res.ok) {
-      return null; 
-    }
-
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    
+    const res = await api.get('/users'); 
+    
+    
+    return Array.isArray(res.data) ? res.data : [];
     
   } catch (error: unknown) { 
-    console.error("Erro ao buscar usuários:", error);
+    console.error("Erro ao buscar usuários do Nest:", error);
     return null; 
   }
 }
@@ -42,29 +38,25 @@ export default async function ListUser() {
         </div>
 
         <div className="w-full">
-          {}
           {isError && (
             <div className="p-6 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-lg text-center">
               <p className="text-red-600 dark:text-red-400 font-medium">
-                Falha ao buscar usuários. Verifique sua conexão ou a API.
+                Falha ao buscar usuários. Verifique se o Back-end está ligado.
               </p>
             </div>
           )}
 
-          {}
           {isEmpty && (
             <p className="text-zinc-500 dark:text-zinc-400 text-center py-8">
-              Nenhum usuário encontrado.
+              Nenhum usuário encontrado no banco de dados.
             </p>
           )}
 
-          {}
           {users && users.length > 0 && (
             <ul className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {users.map((user) => (
                 <li key={user.id} className="flex items-center justify-between py-4">
                   
-                  {}
                   <div className="flex flex-col gap-1">
                     <span className="font-semibold text-zinc-900 dark:text-zinc-100">
                       {user.name}
@@ -74,7 +66,6 @@ export default async function ListUser() {
                     </span>
                   </div>
 
-                  {}
                   <Link 
                     href={`/edit-user?id=${user.id}`} 
                     className="p-2 text-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
